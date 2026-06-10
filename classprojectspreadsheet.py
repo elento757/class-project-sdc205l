@@ -4,51 +4,89 @@
 
 from datetime import datetime
 
-# Function to convert rainfall from inches to centimeters
+# This function converts rainfall from inches to centimeters.
 def convertData(data):
     convertedValue = data * 2.54
     return convertedValue
 
-# Function to collect user input and process entries
+
+# This function writes comma-separated data to a CSV file.
+def insertData(filePath, dataString):
+
+    try:
+        with open(filePath, "a") as csvFile:
+            csvFile.write(dataString + "\n")
+        return True
+
+    except Exception as error:
+        print("Error writing to file:", error)
+        return False
+
+
+# This function reads and displays the contents of a CSV file.
+def viewData(filePath):
+
+    try:
+        print(f"\nReading data from: {filePath}\n")
+
+        with open(filePath, "r") as csvFile:
+            contents = csvFile.read()
+
+            if contents:
+                print(contents)
+            else:
+                print("The file is empty.")
+
+    except Exception as error:
+        print("Error reading file:", error)
+
+
+# This function collects rainfall data from the user and stores it in a CSV file.
 def getInput():
 
-    numberOfEntries = int(input("How many entries are being entered? "))
+    filePath = "ZooData.csv"
 
-    for entry in range(numberOfEntries):
+    try:
+        numberOfEntries = int(input("How many entries are being entered? "))
 
-        entryDate = input("Enter the date: ")
-        rainInches = float(input("Enter rainfall amount in inches: "))
+        for entry in range(numberOfEntries):
 
-        # Calling convertData(data) where data is the rainfall amount in inches.
-        # Expected return value: rainfall converted from inches to centimeters.
-        convertedRain = convertData(rainInches)
+            entryDate = input("Enter the date: ")
+            rainInches = float(input("Enter rainfall amount in inches: "))
 
-        print()
-        print(f"The following was saved at {datetime.now()}:")
-        print(f"Date: {entryDate}")
-        print(f"Rainfall (in): {rainInches}")
-        print(f"Rainfall (cm): {convertedRain:.2f}")
-        print()
+            # Calling convertData(data) where data is the rainfall amount in inches.
+            # Expected return value: rainfall converted from inches to centimeters.
+            convertedRain = convertData(rainInches)
+
+            csvData = f"{entryDate},{rainInches},{convertedRain:.2f}"
+
+            insertSuccessful = insertData(filePath, csvData)
+
+            if insertSuccessful:
+                print(
+                    f"\nThe following data was saved at {datetime.now()}: {csvData}\n"
+                )
+
+    except Exception as error:
+        print("Error processing input:", error)
+
 
 def main():
 
     studentId = "elebre6186"
 
-    # First line output
     print(f"{studentId} Spreadsheet Automation Menu.")
     print()
 
-    # Store menu options in a list
     menuOptions = [
         "Rainfall Spreadsheet",
-        "Open a Spreadsheet",
+        "View Stored Data",
         "Edit Spreadsheet Data",
         "Save Spreadsheet",
         "Generate Report",
         "Exit"
     ]
 
-    # Display menu using a for-loop
     for optionNumber, optionName in enumerate(menuOptions, start=1):
         print(f"{optionNumber}. {optionName}")
 
@@ -59,7 +97,6 @@ def main():
 
     print()
 
-    # Validate the user's choice
     if selectedOption.isdigit():
 
         selectedOption = int(selectedOption)
@@ -71,6 +108,10 @@ def main():
 
             if selectedOption == 1:
                 getInput()
+
+            elif selectedOption == 2:
+                viewData("ZooData.csv")
+
             else:
                 print("Error: The chosen functionality is not implemented yet")
 
@@ -80,5 +121,6 @@ def main():
     else:
         print("Error: Invalid choice selected.")
 
-# Start the program
+
+# Start the application
 main()
