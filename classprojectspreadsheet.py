@@ -4,7 +4,34 @@
 
 from datetime import datetime
 
+# Function to convert rainfall from inches to centimeters
+def convertData(data):
+    convertedValue = data * 2.54
+    return convertedValue
+
+# Function to collect user input and process entries
+def getInput():
+
+    numberOfEntries = int(input("How many entries are being entered? "))
+
+    for entry in range(numberOfEntries):
+
+        entryDate = input("Enter the date: ")
+        rainInches = float(input("Enter rainfall amount in inches: "))
+
+        # Calling convertData(data) where data is the rainfall amount in inches.
+        # Expected return value: rainfall converted from inches to centimeters.
+        convertedRain = convertData(rainInches)
+
+        print()
+        print(f"The following was saved at {datetime.now()}:")
+        print(f"Date: {entryDate}")
+        print(f"Rainfall (in): {rainInches}")
+        print(f"Rainfall (cm): {convertedRain:.2f}")
+        print()
+
 def main():
+
     studentId = "elebre6186"
 
     # First line output
@@ -13,7 +40,7 @@ def main():
 
     # Store menu options in a list
     menuOptions = [
-        "Create a Spreadsheet",
+        "Rainfall Spreadsheet",
         "Open a Spreadsheet",
         "Edit Spreadsheet Data",
         "Save Spreadsheet",
@@ -34,15 +61,24 @@ def main():
 
     # Validate the user's choice
     if selectedOption.isdigit():
+
         selectedOption = int(selectedOption)
 
         if 1 <= selectedOption <= len(menuOptions):
+
             print(f"You selected option number {selectedOption}.")
             print("The time and date is", str(datetime.now()))
+
+            if selectedOption == 1:
+                getInput()
+            else:
+                print("Error: The chosen functionality is not implemented yet")
+
         else:
             print("Error: Invalid choice selected.")
+
     else:
         print("Error: Invalid choice selected.")
 
-# Call the main function
+# Start the program
 main()
